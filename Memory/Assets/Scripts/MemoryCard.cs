@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class MemoryCard : MonoBehaviour
     [SerializeField] private GameObject cardBack;
     [SerializeField] private Sprite image;
     [SerializeField] private SceneController controller;
+    private Quaternion target;
 
     private int _id;
     public int id
@@ -22,17 +24,31 @@ public class MemoryCard : MonoBehaviour
     }
     private void Start()
     {
+        target = transform.rotation;
     }
     private void OnMouseDown()
     {
         if (cardBack.activeSelf && controller.canReveal)
         {
-            cardBack.SetActive(false);
+            Turn();
+            //cardBack.SetActive(false);
             controller.CardRevealed(this);
         }
     }
     public void Unrevel()
     {
-        cardBack.SetActive(true);
+        Turn();
+        //cardBack.SetActive(true);
+    }
+    private void Update()
+    {
+        if (transform.rotation != target)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, target, Time.deltaTime * 5f);
+        }
+    }
+    public void Turn()
+    {
+        target *= Quaternion.Euler(0.0f, 180.0f, 0.0f);
     }
 }

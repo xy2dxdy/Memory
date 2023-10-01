@@ -89,7 +89,7 @@ public class SceneController : MonoBehaviour
         _secondRevealed = null;
     }
 
-    //[System.Obsolete]
+    [System.Obsolete]
     public void Restart()
     {
         Application.LoadLevel("SampleScene");

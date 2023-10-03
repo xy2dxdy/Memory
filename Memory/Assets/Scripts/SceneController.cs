@@ -6,15 +6,22 @@ using UnityEngine;
 public class SceneController : MonoBehaviour
 {
     [SerializeField] private MemoryCard originalCard;
+    //[SerializeField] private BonusExtraTime bonusTime;
+    //[SerializeField] private MemoryCard o2riginalCard;
+    //[SerializeField] private MemoryCard or2i1ginalCard;
     [SerializeField] private Sprite[] images;
     [SerializeField] private TextMesh scoreLabel;
-    [SerializeField] private int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 };
+    [SerializeField] private int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 8, 8, 9, 9}; //26
     [SerializeField] private MemoryCard[] cards;
+    [SerializeField] private Freezing freezing;
+    [SerializeField] private GameObject spawn1;
+    [SerializeField] private GameObject spawn2;
+    [SerializeField] private GameObject spawn3;
     private int numberOfCards = 0;
-    public const int gridRows = 2;
-    public const int gridCols = 7;
-    public const float offsetX = 2.5f;
-    public const float offsetY = 3f;
+    public const int gridRows = 4;
+    public const int gridCols = 8;
+    public const float offsetX = 2f;
+    public const float offsetY = 2f;
 
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
@@ -55,16 +62,17 @@ public class SceneController : MonoBehaviour
                 int index = j * gridCols + i;
                 int id = numbers[index];
                 card.SetCard(id, images[id]);
-
                 float posX = offsetX * i + startPos.x;
                 float posY = -offsetY * j + startPos.y;
                 card.transform.position = new Vector3(posX, posY, startPos.z);
                 cards[numberOfCards++] = card;
             }
         }
-        StartCoroutine(Mixed());
+        StartCoroutine(Mixed(5));
+        StartCoroutine(Freeze());
 
-        
+
+
     }
     private int[] ShuffleArray(int[] numbers)
     { 
@@ -99,8 +107,25 @@ public class SceneController : MonoBehaviour
     {
         if (_firstRevealed.id == _secondRevealed.id)
         {
+            if (_firstRevealed.id == 7)
+            {
+                _firstRevealed.transform.position = spawn1.transform.position;
+                //_secondRevealed.DestroyBack();
+                Destroy(_secondRevealed.gameObject);
+            }
+            if (_firstRevealed.id == 8)
+            {
+                _firstRevealed.transform.position = spawn2.transform.position;
+                Destroy(_secondRevealed.gameObject);
+            }
+            if (_firstRevealed.id == 9)
+            {
+                _firstRevealed.transform.position = spawn3.transform.position;
+                Destroy(_secondRevealed.gameObject);
+            }
             _score++;
             scoreLabel.text = "Score: " + _score;
+            freezing.toDecrease();
         }
         else
         {
@@ -117,9 +142,21 @@ public class SceneController : MonoBehaviour
     {
         Application.LoadLevel("SampleScene");
     }
-    private IEnumerator Mixed()
+    private IEnumerator Mixed(int time)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(time);
         cards = ShuffleArray(cards);
+    }
+    private IEnumerator Freeze()
+    {
+        cards = ShuffleArray(cards);
+        MemoryCard[] mass = new MemoryCard[3];
+        for (int i = 0; i < 3; i++)
+        {
+            mass[i] = cards[i];
+        }
+        yield return new WaitForSeconds(5);
+        freezing.toSetCard(mass);
+        freezing.toSetCount(3);
     }
 }

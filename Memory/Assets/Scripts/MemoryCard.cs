@@ -9,7 +9,13 @@ public class MemoryCard : MonoBehaviour
     [SerializeField] private GameObject cardBack;
     [SerializeField] private Sprite image;
     [SerializeField] private SceneController controller;
+    [SerializeField] private Sprite imageFreeze;
+    [SerializeField] private Sprite imageBack;
+    [SerializeField] private GameObject text;
+    
+    private bool isFreeze = false;
     private Quaternion target;
+    public GameObject textF;
 
     private int _id;
     public int id
@@ -28,7 +34,7 @@ public class MemoryCard : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (cardBack.activeSelf && controller.canReveal)
+        if (cardBack.activeSelf && controller.canReveal && !isFreeze)
         {
             Turn();
             controller.CardRevealed(this);
@@ -48,5 +54,25 @@ public class MemoryCard : MonoBehaviour
     public void Turn()
     {
         target *= Quaternion.Euler(0.0f, 180.0f, 0.0f);
+    }
+    public void toFreeze(int score)
+    {
+        cardBack.GetComponent<SpriteRenderer>().sprite = imageFreeze;
+        isFreeze = true;
+        textF = Instantiate(text, transform.position + new Vector3(0, 0, -10), Quaternion.identity);
+    }
+    public void toUnfreeze()
+    {
+        isFreeze = false;
+        cardBack.GetComponent<SpriteRenderer>().sprite = imageBack;
+        Destroy(textF);
+    }
+    public void toSetText(string text)
+    {
+        textF.GetComponent<TextMesh>().text = text;
+    }
+    public void DestroyBack()
+    {
+        Destroy(cardBack);
     }
 }

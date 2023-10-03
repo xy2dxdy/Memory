@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class SceneController : MonoBehaviour
@@ -7,7 +8,9 @@ public class SceneController : MonoBehaviour
     [SerializeField] private MemoryCard originalCard;
     [SerializeField] private Sprite[] images;
     [SerializeField] private TextMesh scoreLabel;
-
+    [SerializeField] private int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 };
+    [SerializeField] private MemoryCard[] cards;
+    private int numberOfCards = 0;
     public const int gridRows = 2;
     public const int gridCols = 7;
     public const float offsetX = 2.5f;
@@ -32,8 +35,9 @@ public class SceneController : MonoBehaviour
     }
     void Start()
     {
+        cards = new MemoryCard[numbers.Length];
         Vector3 startPos = originalCard.transform.position;
-        int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6};
+        
         numbers = ShuffleArray(numbers);
         for (int i = 0; i < gridCols; i++)
         {
@@ -55,8 +59,10 @@ public class SceneController : MonoBehaviour
                 float posX = offsetX * i + startPos.x;
                 float posY = -offsetY * j + startPos.y;
                 card.transform.position = new Vector3(posX, posY, startPos.z);
+                cards[numberOfCards++] = card;
             }
         }
+        StartCoroutine(Mixed());
 
         
     }
@@ -71,6 +77,23 @@ public class SceneController : MonoBehaviour
             newArray[r] = tmp;
         }
         return newArray;
+    }
+    private MemoryCard[] ShuffleArray(MemoryCard[] cards)
+    {
+        for (int i = 0; i < cards.Length; i++)
+        {
+            if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
+            {
+                Vector3 pos = cards[i].transform.position;
+                int r = Random.Range(i, cards.Length);
+                while(cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
+                    r = Random.Range(i, cards.Length);
+                cards[i].transform.position = cards[r].transform.position;
+                cards[r].transform.position = pos;
+            }
+            
+        }
+        return cards;
     }
     private IEnumerator CheckMatch()
     {
@@ -93,5 +116,10 @@ public class SceneController : MonoBehaviour
     public void Restart()
     {
         Application.LoadLevel("SampleScene");
+    }
+    private IEnumerator Mixed()
+    {
+        yield return new WaitForSeconds(5);
+        cards = ShuffleArray(cards);
     }
 }

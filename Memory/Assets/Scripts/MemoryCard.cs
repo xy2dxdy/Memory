@@ -31,14 +31,12 @@ public class MemoryCard : MonoBehaviour
         if (cardBack.activeSelf && controller.canReveal)
         {
             Turn();
-            //cardBack.SetActive(false);
             controller.CardRevealed(this);
         }
     }
     public void Unrevel()
     {
         Turn();
-        //cardBack.SetActive(true);
     }
     private void Update()
     {

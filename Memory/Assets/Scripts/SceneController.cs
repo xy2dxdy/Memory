@@ -14,6 +14,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private GameObject spawn1;
     [SerializeField] private GameObject spawn2;
     [SerializeField] private GameObject spawn3;
+    [SerializeField] private CardShuffler shuffler;
     private int numberOfCards = 0;
     public const int gridRows = 4;
     public const int gridCols = 8;
@@ -66,7 +67,8 @@ public class SceneController : MonoBehaviour
             }
         }
         StartCoroutine(Mixed(0));
-        StartCoroutine(Mixed(30));
+      //  shuffler.SetCards(cards);
+       // shuffler.toShuffle();
         StartCoroutine(Freeze());
 
 

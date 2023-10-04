@@ -12,7 +12,10 @@ public class MemoryCard : MonoBehaviour
     [SerializeField] private Sprite imageFreeze;
     [SerializeField] private Sprite imageBack;
     [SerializeField] private GameObject text;
-    
+
+    [SerializeField] private BonusExtraTime bonusTime;
+    [SerializeField] private OpeningRandomCards randomCards;
+    [SerializeField] private FindPair findPair;
     private bool isFreeze = false;
     private Quaternion target;
     public GameObject textF;
@@ -34,10 +37,35 @@ public class MemoryCard : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (cardBack.activeSelf && controller.canReveal && !isFreeze)
+        if (cardBack == null)
         {
-            Turn();
-            controller.CardRevealed(this);
+            switch (_id)
+            {
+                case 7:
+                    bonusTime.SetTime(30);
+                    Destroy(gameObject);
+                    break;
+                case 8:
+                    randomCards.Open(controller.GetCards());
+                    Destroy(gameObject);
+                    break;
+                case 9:
+                    findPair.SetCard(controller.GetFirstRevealed());
+                    findPair.SetCards(controller.GetCards());
+                    findPair.Find();
+                    Destroy(gameObject);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            if (cardBack.activeSelf && controller.canReveal && !isFreeze)
+            {
+                Turn();
+                controller.CardRevealed(this);
+            }
         }
     }
     public void Unrevel()
@@ -75,4 +103,9 @@ public class MemoryCard : MonoBehaviour
     {
         Destroy(cardBack);
     }
+    public bool Equals(MemoryCard obj) 
+    {
+        return (_id == obj._id && transform.position != obj.transform.position);
+    }
+
 }

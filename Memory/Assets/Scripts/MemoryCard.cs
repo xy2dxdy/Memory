@@ -101,6 +101,11 @@ public class MemoryCard : MonoBehaviour
     }
     public void DestroyBack()
     {
+        StartCoroutine(DeleteBack());
+    }
+    private IEnumerator DeleteBack()
+    {
+        yield return new WaitForSeconds(0.2f);
         Destroy(cardBack);
     }
     public bool Equals(MemoryCard obj) 

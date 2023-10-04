@@ -105,36 +105,47 @@ public class SceneController : MonoBehaviour
     }
     private IEnumerator CheckMatch()
     {
-        if (_firstRevealed.id == _secondRevealed.id)
+        if (_firstRevealed.id == _secondRevealed.id && _firstRevealed.transform.position != _secondRevealed.transform.position)
         {
             if (_firstRevealed.id == 13)
             {
-                _firstRevealed.transform.position = spawn1.transform.position;
-                _firstRevealed.DestroyBack();
-
-                Destroy(_secondRevealed.gameObject);
+                StartCoroutine(Bonus(_firstRevealed, _secondRevealed, spawn1));
             }
-            if (_firstRevealed.id == 14)
+            else
             {
-                _firstRevealed.transform.position = spawn2.transform.position;
-                _firstRevealed.DestroyBack();
-                Destroy(_secondRevealed.gameObject);
+                if (_firstRevealed.id == 14)
+                {
+                    StartCoroutine(Bonus(_firstRevealed, _secondRevealed, spawn2));
+                }
+                else
+                {
+                    if (_firstRevealed.id == 15)
+                    {
+                        StartCoroutine(Bonus(_firstRevealed, _secondRevealed, spawn3));
+                    }
+                    else 
+                    {
+                        _firstRevealed.DestroyBack();
+                        _secondRevealed.DestroyBack();
+                        _score++;
+                        if (_score >= 13)
+                            Debug.Log("THE END. YOU WIN");
+                        scoreLabel.text = "Score: " + _score;
+                        freezing.toDecrease();
+                    }
+                }
             }
-            if (_firstRevealed.id == 15)
-            {
-                _firstRevealed.transform.position = spawn3.transform.position;
-                _firstRevealed.DestroyBack();
-                Destroy(_secondRevealed.gameObject);
-            }
-            _score++;
-            scoreLabel.text = "Score: " + _score;
-            freezing.toDecrease();
+            
+            
         }
         else
         {
-            yield return new WaitForSeconds(.5f);
-            _firstRevealed.Unrevel();
-            _secondRevealed.Unrevel();
+            if (_firstRevealed.id != _secondRevealed.id)
+            {
+                yield return new WaitForSeconds(.5f);
+                _firstRevealed.Unrevel();
+                _secondRevealed.Unrevel();
+            }
         }
         _firstRevealed = null;
         _secondRevealed = null;
@@ -169,5 +180,12 @@ public class SceneController : MonoBehaviour
     public MemoryCard GetFirstRevealed()
     {
         return _firstRevealed;
+    }
+    private IEnumerator Bonus(MemoryCard _firstRevealed, MemoryCard _secondRevealed, GameObject spawn)
+    {
+        yield return new WaitForSeconds(1f);
+        _firstRevealed.transform.position = spawn.transform.position;
+        _firstRevealed.DestroyBack();
+        Destroy(_secondRevealed.gameObject);
     }
 }

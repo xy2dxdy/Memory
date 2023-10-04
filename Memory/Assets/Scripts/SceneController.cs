@@ -8,7 +8,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private MemoryCard originalCard;
     [SerializeField] private Sprite[] images;
     [SerializeField] private TextMesh scoreLabel;
-    [SerializeField] private int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 8, 8, 9, 9}; //26
+    [SerializeField] private int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15}; //26
     [SerializeField] private MemoryCard[] cards;
     [SerializeField] private Freezing freezing;
     [SerializeField] private GameObject spawn1;
@@ -17,8 +17,8 @@ public class SceneController : MonoBehaviour
     private int numberOfCards = 0;
     public const int gridRows = 4;
     public const int gridCols = 8;
-    public const float offsetX = 2.5f;
-    public const float offsetY = 3f;
+    public const float offsetX = 3f;
+    public const float offsetY = 3.5f;
 
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
@@ -105,20 +105,20 @@ public class SceneController : MonoBehaviour
     {
         if (_firstRevealed.id == _secondRevealed.id)
         {
-            if (_firstRevealed.id == 7)
+            if (_firstRevealed.id == 13)
             {
                 _firstRevealed.transform.position = spawn1.transform.position;
                 _firstRevealed.DestroyBack();
 
                 Destroy(_secondRevealed.gameObject);
             }
-            if (_firstRevealed.id == 8)
+            if (_firstRevealed.id == 14)
             {
                 _firstRevealed.transform.position = spawn2.transform.position;
                 _firstRevealed.DestroyBack();
                 Destroy(_secondRevealed.gameObject);
             }
-            if (_firstRevealed.id == 9)
+            if (_firstRevealed.id == 15)
             {
                 _firstRevealed.transform.position = spawn3.transform.position;
                 _firstRevealed.DestroyBack();

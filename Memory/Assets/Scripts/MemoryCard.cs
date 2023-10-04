@@ -41,15 +41,15 @@ public class MemoryCard : MonoBehaviour
         {
             switch (_id)
             {
-                case 7:
+                case 13:
                     bonusTime.SetTime(30);
                     Destroy(gameObject);
                     break;
-                case 8:
+                case 14:
                     randomCards.Open(controller.GetCards());
                     Destroy(gameObject);
                     break;
-                case 9:
+                case 15:
                     findPair.SetCard(controller.GetFirstRevealed());
                     findPair.SetCards(controller.GetCards());
                     findPair.Find();

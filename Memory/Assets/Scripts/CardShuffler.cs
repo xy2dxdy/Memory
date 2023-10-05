@@ -25,8 +25,9 @@ public class CardShuffler : MonoBehaviour
     {
         this.cards = cards;
     }
-    public void toShuffle()
+    public IEnumerator toShuffle()
     {
+        yield return new WaitForSeconds(0.5f);
         MemoryCard[] new1Cards = new MemoryCard[cards.Length];
         cards.CopyTo(new1Cards, 0);
         
@@ -42,7 +43,7 @@ public class CardShuffler : MonoBehaviour
         Vector3[] positions = new Vector3[newCards.Length];
         for (int i = 0; i < kol; i++)
         {
-            positions[i] = cards[i].transform.position;
+            positions[i] = newCards[i].transform.position;
         }
         StartCoroutine(toTransform(newCards, positions));
     }
@@ -52,12 +53,12 @@ public class CardShuffler : MonoBehaviour
         {
             if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
             {
-                Vector3 pos = cards[i].transform.position;
+                MemoryCard buf = cards[i];
                 int r = Random.Range(i, cards.Length);
                 while (cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
                     r = Random.Range(i, cards.Length);
-                cards[i].transform.position = cards[r].transform.position;
-                cards[r].transform.position = pos;
+                cards[i] = cards[r];
+                cards[r] = buf;
             }
 
         }

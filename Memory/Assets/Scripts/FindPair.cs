@@ -19,7 +19,6 @@ public class FindPair : MonoBehaviour
     public void Find()
     {
         Debug.Log(card);
-        //MemoryCard cardFound = null;
         foreach (MemoryCard card in cards) 
         {
             if (card.Equals(this.card))

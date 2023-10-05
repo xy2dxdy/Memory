@@ -22,15 +22,6 @@ public class Freezing : MonoBehaviour
                     _cards[i].textF.GetComponent<TextMesh>().text = "" + _count;
                 }
             }
-            //foreach (MemoryCard card in _cards)
-            //{
-            //    if (card.textF == null)
-            //        card.toFreeze(_count);
-            //    else
-            //    {
-            //        card.textF.text = "" + _count;
-            //    }
-            //}
         }
         if (_count == 0 && _cards != null)
         {

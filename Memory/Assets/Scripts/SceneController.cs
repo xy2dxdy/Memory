@@ -15,6 +15,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private GameObject spawn2;
     [SerializeField] private GameObject spawn3;
     [SerializeField] private CardShuffler shuffler;
+    [SerializeField] private Mag mag;
     private int numberOfCards = 0;
     public const int gridRows = 4;
     public const int gridCols = 8;
@@ -37,6 +38,10 @@ public class SceneController : MonoBehaviour
             _secondRevealed = card;
             StartCoroutine(CheckMatch());
         }
+    }
+    public int GetScore()
+    {
+        return _score;
     }
     void Start()
     {
@@ -66,13 +71,6 @@ public class SceneController : MonoBehaviour
                 cards[numberOfCards++] = card;
             }
         }
-        StartCoroutine(Mixed(0));
-      //  shuffler.SetCards(cards);
-       // shuffler.toShuffle();
-        StartCoroutine(Freeze());
-
-
-
     }
     private int[] ShuffleArray(int[] numbers)
     { 
@@ -129,7 +127,9 @@ public class SceneController : MonoBehaviour
                         _secondRevealed.DestroyBack();
                         _score++;
                         if (_score >= 13)
-                            Debug.Log("THE END. YOU WIN");
+                            Debug.Log("THE END. YOU WON");
+                        else if (_score == 5)
+                            mag.CreateMag();
                         scoreLabel.text = "Score: " + _score;
                         freezing.toDecrease();
                     }
@@ -161,7 +161,7 @@ public class SceneController : MonoBehaviour
         yield return new WaitForSeconds(time);
         cards = ShuffleArray(cards);
     }
-    private IEnumerator Freeze()
+    public IEnumerator Freeze()
     {
         cards = ShuffleArray(cards);
         MemoryCard[] mass = new MemoryCard[3];
@@ -169,7 +169,7 @@ public class SceneController : MonoBehaviour
         {
             mass[i] = cards[i];
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         freezing.toSetCard(mass);
         freezing.toSetCount(3);
     }

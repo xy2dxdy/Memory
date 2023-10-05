@@ -84,20 +84,39 @@ public class SceneController : MonoBehaviour
         }
         return newArray;
     }
+    //private MemoryCard[] ShuffleArray(MemoryCard[] cards)
+    //{
+    //    for (int i = 0; i < cards.Length; i++)
+    //    {
+    //        if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
+    //        {
+    //            Vector3 pos = cards[i].transform.position;
+    //            int r = Random.Range(i, cards.Length);
+    //            while(cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
+    //                r = Random.Range(i, cards.Length);
+    //            cards[i].transform.position = cards[r].transform.position;
+    //            cards[r].transform.position = pos;
+    //        }
+            
+    //    }
+    //    return cards;
+    //}
     private MemoryCard[] ShuffleArray(MemoryCard[] cards)
     {
         for (int i = 0; i < cards.Length; i++)
         {
+            if (cards[i] == null)
+                i++;
             if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
             {
-                Vector3 pos = cards[i].transform.position;
+                MemoryCard buf = cards[i];
                 int r = Random.Range(i, cards.Length);
-                while(cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
+                while (cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
                     r = Random.Range(i, cards.Length);
-                cards[i].transform.position = cards[r].transform.position;
-                cards[r].transform.position = pos;
+                cards[i] = cards[r];
+                cards[r] = buf;
             }
-            
+
         }
         return cards;
     }

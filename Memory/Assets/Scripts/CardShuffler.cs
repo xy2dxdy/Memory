@@ -35,6 +35,8 @@ public class CardShuffler : MonoBehaviour
         newCards = new MemoryCard[cards.Length];
         for(int i = 0; i < cards.Length; i++)
         {
+            if (cards[i] == null)
+                i++;
             if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
             {
                 newCards[kol++] = cards[i];

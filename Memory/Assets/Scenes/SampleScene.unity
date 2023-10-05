@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849d1b292fcb34c49966bdf84d1dbb59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 180
+  time: 150
   timerImage: {fileID: 12323613}
 --- !u!4 &297675482
 Transform:

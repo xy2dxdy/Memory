@@ -16,6 +16,7 @@ public class MemoryCard : MonoBehaviour
     [SerializeField] private BonusExtraTime bonusTime;
     [SerializeField] private OpeningRandomCards randomCards;
     [SerializeField] private FindPair findPair;
+    [SerializeField] private AudioSource turning;
     private bool isFreeze = false;
     private Quaternion target;
     public GameObject textF;
@@ -81,6 +82,7 @@ public class MemoryCard : MonoBehaviour
     }
     public void Turn()
     {
+        turning.Play();
         target *= Quaternion.Euler(0.0f, 180.0f, 0.0f);
     }
     public void toFreeze(int score)
@@ -112,5 +114,6 @@ public class MemoryCard : MonoBehaviour
     {
         return (_id == obj._id && transform.position != obj.transform.position);
     }
+    public GameObject GetCardBack() { return cardBack; }
 
 }

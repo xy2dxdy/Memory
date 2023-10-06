@@ -16,7 +16,13 @@ public class Freezing : MonoBehaviour
             for (int i = 0; i < _cards.Length; i++)
             {
                 if (_cards[i] == null)
-                    i++;
+                {
+                    continue;
+                }
+                if (_cards[i].GetCardBack() == null)
+                { 
+                    continue; 
+                }
                 if (_cards[i].textF == null)
                     _cards[i].toFreeze(_count);
                 else
@@ -38,7 +44,7 @@ public class Freezing : MonoBehaviour
     public void toSetCard(MemoryCard[] cards)
     {
         _cards = cards;
-        Debug.Log(_cards[0].name);
+        //Debug.Log(_cards[0].name);
     }
     public void toSetCount(int count)
     {

@@ -36,7 +36,9 @@ public class CardShuffler : MonoBehaviour
         for(int i = 0; i < cards.Length; i++)
         {
             if (cards[i] == null)
-                i++;
+            {
+                continue;
+            }
             if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
             {
                 newCards[kol++] = cards[i];
@@ -101,4 +103,5 @@ public class CardShuffler : MonoBehaviour
         card = null;
         this.cards = null;
     }
+    public GameObject GetSpawn() { return spawn; }
 }

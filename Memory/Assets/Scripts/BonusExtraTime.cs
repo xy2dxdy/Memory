@@ -15,5 +15,6 @@ public class BonusExtraTime : MonoBehaviour
         this.time = time;
         coroutineTimer.IncreaseTime(time);
     }
+    public CoroutineTimer GetTimer() { return coroutineTimer; }
 
 }

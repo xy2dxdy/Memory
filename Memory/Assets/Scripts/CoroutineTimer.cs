@@ -35,4 +35,5 @@ public class CoroutineTimer : MonoBehaviour
         this.time += time;
         _timeLeft += time;
     }
+    public Image GetImage() { return timerImage; }
 }

@@ -106,11 +106,11 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < cards.Length; i++)
         {
             if (cards[i] == null)
-                i++;
+            {
+                continue;
+            }
             if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
             {
-                if (cards[i] == null)
-                    i++;
                 MemoryCard buf = cards[i];
                 int r = Random.Range(i, cards.Length);
                 while (cards[r] == null || cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
@@ -188,7 +188,11 @@ public class SceneController : MonoBehaviour
         MemoryCard[] mass = new MemoryCard[3];
         for (int i = 0; i < 3; i++)
         {
-            mass[i] = cards[i];
+            if (cards[i] != null)
+            {
+                mass[i] = cards[i];
+                i--;
+            }
         }
         yield return new WaitForSeconds(2);
         freezing.toSetCard(mass);

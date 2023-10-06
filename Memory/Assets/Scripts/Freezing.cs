@@ -15,6 +15,8 @@ public class Freezing : MonoBehaviour
         {
             for (int i = 0; i < _cards.Length; i++)
             {
+                if (_cards[i] == null)
+                    i++;
                 if (_cards[i].textF == null)
                     _cards[i].toFreeze(_count);
                 else

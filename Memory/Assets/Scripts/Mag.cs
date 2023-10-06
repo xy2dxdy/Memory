@@ -9,11 +9,13 @@ public class Mag : MonoBehaviour
     [SerializeField] private CardShuffler shuffler;
     [SerializeField] private SceneController sceneController;
     [SerializeField] private int amountTime = -20;
-
+    [SerializeField] private GameObject mag;
+    [SerializeField] private AudioSource music;
     public void CreateMag()
     {
         int number = Random.Range(0, 3);
-        switch (number)
+        StartCoroutine(CoroutineMag());
+            switch (number)
         {
             case 0:
                 Debug.Log("Time");
@@ -31,5 +33,17 @@ public class Mag : MonoBehaviour
         }
 
     }
-
+    private IEnumerator CoroutineMag()
+    {
+        mag.GetComponent<SpriteRenderer>().enabled = true;
+        mag.GetComponent<Animator>().enabled = true;
+        music.volume /= 10;
+        mag.GetComponent<AudioSource>().enabled = true;
+        yield return new WaitForSeconds(2);
+        mag.GetComponent<SpriteRenderer>().enabled = false;
+        mag.GetComponent<Animator>().enabled = false;
+        yield return new WaitForSeconds(5);
+        mag.GetComponent<AudioSource>().enabled = false;
+        music.volume *= 10;
+    }
 }

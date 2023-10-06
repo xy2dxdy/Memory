@@ -19,7 +19,7 @@ public class SceneController : MonoBehaviour
     private int numberOfCards = 0;
     public const int gridRows = 4;
     public const int gridCols = 8;
-    public const float offsetX = 3f;
+    public const float offsetX = 2.5f;
     public const float offsetY = 3.5f;
 
     private MemoryCard _firstRevealed;
@@ -109,9 +109,11 @@ public class SceneController : MonoBehaviour
                 i++;
             if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
             {
+                if (cards[i] == null)
+                    i++;
                 MemoryCard buf = cards[i];
                 int r = Random.Range(i, cards.Length);
-                while (cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
+                while (cards[r] == null || cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
                     r = Random.Range(i, cards.Length);
                 cards[i] = cards[r];
                 cards[r] = buf;

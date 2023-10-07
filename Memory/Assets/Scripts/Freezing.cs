@@ -20,8 +20,8 @@ public class Freezing : MonoBehaviour
                     continue;
                 }
                 if (_cards[i].GetCardBack() == null)
-                { 
-                    continue; 
+                {
+                    continue;
                 }
                 if (_cards[i].textF == null)
                     _cards[i].toFreeze(_count);
@@ -35,6 +35,8 @@ public class Freezing : MonoBehaviour
         {
             foreach (MemoryCard card in _cards)
             {
+                if (card == null)
+                    continue;
                 card.toUnfreeze();
             }
             _cards = null;

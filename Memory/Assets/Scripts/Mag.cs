@@ -31,7 +31,6 @@ public class Mag : MonoBehaviour
     public void CreateMag()
     {
         int number = UnityEngine.Random.Range(0, 3);
-       
         switch (number)
         {
             case 0:     
@@ -40,7 +39,7 @@ public class Mag : MonoBehaviour
                 break;
             case 1:
                 Debug.Log("Freeze");
-                StartCoroutine(CoroutineMag(lightningFreeze, new Vector3(0, 0, 0)));
+                StartCoroutine(CoroutineMag(lightningFreeze));
                 sceneController.StartCoroutine(sceneController.Freeze());
                 break;
             default:
@@ -60,6 +59,7 @@ public class Mag : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         lightSound.Play();
         sprite.enabled = true;
+
         Instantiate(particle, pos, Quaternion.identity);
         yield return new WaitForSeconds(0.8f);
         sprite.enabled = false;
@@ -69,7 +69,27 @@ public class Mag : MonoBehaviour
         GetComponent<Animator>().enabled = false;
         yield return new WaitForSeconds(2.5f);
         GetComponent<SpriteRenderer>().enabled = false;
-        //yield return new WaitForSeconds(6);
+        GetComponent<AudioSource>().enabled = false;
+        music.volume *= 5;
+    }
+    private IEnumerator CoroutineMag(SpriteRenderer sprite)
+    {
+        GetComponent<SpriteRenderer>().enabled = true;
+        music.volume /= 5;
+        GetComponent<AudioSource>().enabled = true;
+        yield return new WaitForSeconds(2f);
+        GetComponent<Animator>().enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        lightSound.Play();
+        sprite.enabled = true;
+        yield return new WaitForSeconds(0.8f);
+        sprite.enabled = false;
+        GameObject buf = spawn;
+        spawn = spawn1;
+        spawn1 = buf;
+        GetComponent<Animator>().enabled = false;
+        yield return new WaitForSeconds(2.6f);
+        GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<AudioSource>().enabled = false;
         music.volume *= 5;
     }
@@ -80,5 +100,6 @@ public class Mag : MonoBehaviour
         shuffler.SetCards(sceneController.GetCards());
         shuffler.StartCoroutine(shuffler.toShuffle());
     }
+    public AudioSource GetMusic() { return music; }
 
 }

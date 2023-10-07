@@ -17,6 +17,8 @@ public class MemoryCard : MonoBehaviour
     [SerializeField] private OpeningRandomCards randomCards;
     [SerializeField] private FindPair findPair;
     [SerializeField] private AudioSource turning;
+    [SerializeField] private Pause pause;
+    [SerializeField] private AudioSource musicBonus;
     private bool isFreeze = false;
     private Quaternion target;
     public GameObject textF;
@@ -38,34 +40,40 @@ public class MemoryCard : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (cardBack == null)
+        if (pause.paused == false && controller.GetMenuEnd().activeSelf == false)
         {
-            switch (_id)
+            if (cardBack == null)
             {
-                case 13:
-                    bonusTime.SetTime(30);
-                    Destroy(gameObject);
-                    break;
-                case 14:
-                    randomCards.Open(controller.GetCards());
-                    Destroy(gameObject);
-                    break;
-                case 15:
-                    findPair.SetCard(controller.GetFirstRevealed());
-                    findPair.SetCards(controller.GetCards());
-                    findPair.Find();
-                    Destroy(gameObject);
-                    break;
-                default:
-                    break;
+                switch (_id)
+                {
+                    case 13:
+                        musicBonus.Play();
+                        bonusTime.SetTime(50);
+                        Destroy(gameObject);
+                        break;
+                    case 14:
+                        musicBonus.Play();
+                        randomCards.Open(controller.GetCards());
+                        Destroy(gameObject);
+                        break;
+                    case 15:
+                        musicBonus.Play();
+                        findPair.SetCard(controller.GetFirstRevealed());
+                        findPair.SetCards(controller.GetCards());
+                        findPair.Find();
+                        Destroy(gameObject);
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-        else
-        {
-            if (cardBack.activeSelf && controller.canReveal && !isFreeze)
+            else
             {
-                Turn();
-                controller.CardRevealed(this);
+                if (cardBack.activeSelf && controller.canReveal && !isFreeze)
+                {
+                    Turn();
+                    controller.CardRevealed(this);
+                }
             }
         }
     }

@@ -7,7 +7,6 @@ public class SceneController : MonoBehaviour
 {
     [SerializeField] private MemoryCard originalCard;
     [SerializeField] private Sprite[] images;
-    [SerializeField] private TextMesh scoreLabel;
     [SerializeField] private int[] numbers = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15}; //26
     [SerializeField] private MemoryCard[] cards;
     [SerializeField] private Freezing freezing;
@@ -16,6 +15,10 @@ public class SceneController : MonoBehaviour
     [SerializeField] private GameObject spawn3;
     [SerializeField] private CardShuffler shuffler;
     [SerializeField] private Mag mag;
+    [SerializeField] private GameObject menuEnd;
+    [SerializeField] private SpriteRenderer spriteVictory;
+    [SerializeField] private Pause pause;
+    [SerializeField] private AudioSource win;
     private int numberOfCards = 0;
     public const int gridRows = 4;
     public const int gridCols = 8;
@@ -84,23 +87,6 @@ public class SceneController : MonoBehaviour
         }
         return newArray;
     }
-    //private MemoryCard[] ShuffleArray(MemoryCard[] cards)
-    //{
-    //    for (int i = 0; i < cards.Length; i++)
-    //    {
-    //        if (cards[i].transform.rotation == Quaternion.Euler(0.0f, 0.0f, 0.0f))
-    //        {
-    //            Vector3 pos = cards[i].transform.position;
-    //            int r = Random.Range(i, cards.Length);
-    //            while(cards[r].transform.rotation != Quaternion.Euler(0.0f, 0.0f, 0.0f))
-    //                r = Random.Range(i, cards.Length);
-    //            cards[i].transform.position = cards[r].transform.position;
-    //            cards[r].transform.position = pos;
-    //        }
-            
-    //    }
-    //    return cards;
-    //}
     private MemoryCard[] ShuffleArray(MemoryCard[] cards)
     {
         for (int i = 0; i < cards.Length; i++)
@@ -148,10 +134,17 @@ public class SceneController : MonoBehaviour
                         _secondRevealed.DestroyBack();
                         _score++;
                         if (_score >= 13)
+                        {
+                            yield return new WaitForSeconds(0.5f);
+                            pause.SetPause();
+                            mag.GetMusic().enabled = false;
+                            win.Play();
+                            spriteVictory.enabled = true;
+                            menuEnd.SetActive(true);
                             Debug.Log("THE END. YOU WON");
+                        }
                         else if (_score == 5)
                             mag.CreateMag();
-                        scoreLabel.text = "Score: " + _score;
                         freezing.toDecrease();
                     }
                 }
@@ -184,14 +177,14 @@ public class SceneController : MonoBehaviour
     }
     public IEnumerator Freeze()
     {
+        int k = 0;
         cards = ShuffleArray(cards);
         MemoryCard[] mass = new MemoryCard[3];
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < cards.Length && k < 3; i++)
         {
-            if (cards[i] != null)
+            if (cards[i] != null && cards[i].GetCardBack() != null)
             {
-                mass[i] = cards[i];
-                i--;
+                mass[k++] = cards[i];
             }
         }
         yield return new WaitForSeconds(2);
@@ -213,4 +206,5 @@ public class SceneController : MonoBehaviour
         _firstRevealed.DestroyBack();
         Destroy(_secondRevealed.gameObject);
     }
+    public GameObject GetMenuEnd() { return menuEnd; }
 }
